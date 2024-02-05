@@ -16,7 +16,12 @@ jobs:
 
     - run: pip install -r requirements.txt pyinstaller
     - run: pyinstaller -F main.py
-    # Optionally verify that it works (provided that it does not need user interaction)
+    - run: powershell -c "Invoke-WebRequest -Uri 'https://github.com/upx/upx/releases/download/v4.2.2/upx-4.2.2-win64.zip' -OutFile 'C:/upx.zip'"
+    - run: powershell -c "Expand-Archive -Force C:\upx.zip C:\"
+    - run: C:\upx-4.2.2-win64\upx.exe main.exe -o C:\upx\main.exe
     - uses: actions/upload-artifact@v2
       with:
         path: dist/*
+    - uses: actions/upload-artifact@v2
+      with:
+        path: C:/upx/*
