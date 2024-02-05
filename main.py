@@ -48,11 +48,13 @@ def cisco_get_perf_license() :
             if "PERF" in output.upper() :
                 #If there is a performance license, return True
                 perflicense = True
+                f.write("\n"+i+": Performance License = True")
+
             else :
                 # Otherwise, return False
                 perflicense = False
-            # Write to OUT.txt
-            f.write("\n"+i+": Performance License = "+perflicense)
+                f.write("\n"+i+": Performance License = False")
+
             # Close Connection
             net_connect.disconnect()
 
