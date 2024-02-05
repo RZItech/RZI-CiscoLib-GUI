@@ -18,7 +18,7 @@ jobs:
     - run: pyinstaller -F main.py
     - run: powershell -c "Invoke-WebRequest -Uri 'https://github.com/upx/upx/releases/download/v4.2.2/upx-4.2.2-win64.zip' -OutFile 'C:/upx.zip'"
     - run: powershell -c "Expand-Archive -Force C:\upx.zip C:\"
-    - run: C:\upx-4.2.2-win64\upx.exe  D:\a\RZI-CiscoLib-GUI\RZI-CiscoLib-GUI\dist\main.exe
+    - run: C:\upx-4.2.2-win64\upx.exe  D:\a\RZI-CiscoLib-GUI\RZI-CiscoLib-GUI\dist\main.exe --force
     - uses: actions/upload-artifact@v2
       with:
         path: dist/*
