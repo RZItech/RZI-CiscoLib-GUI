@@ -39,26 +39,28 @@ def cisco_get_perf_license() :
         device.update({"ip": i})
         print("CONNECTING TO:"+i)
         # Start connection to cisco_ios device
-        with ConnectHandler(**device) as net_connect:
-            #Send "show license"
-            net_connect.enable()
-            output = net_connect.send_command("show license summary")
-            print("OUTPUT: \n"+output+"\n END")
-            if "PERF" in output.upper() :
-                #If there is a performance license, return True
-                perflicense = True
-                f.write("\n"+i+": Performance License = True")
-                print("PERFORMANCE LICENSE")
+        try :
+            with ConnectHandler(**device) as net_connect:
+                #Send "show license"
+                net_connect.enable()
+                output = net_connect.send_command("show license summary")
+                print("OUTPUT: \n"+output+"\n END")
+                if "PERF" in output.upper() :
+                    #If there is a performance license, return True
+                    f.write("\n"+i+": Performance License = True")
+                    print("PERFORMANCE LICENSE")
 
-            else :
-                # Otherwise, return False
-                perflicense = False
-                f.write("\n"+i+": Performance License = False")
-                print("NO PERFORMANCE LICENSE")
+                else :
+                    # Otherwise, return False
+                    f.write("\n"+i+": Performance License = False")
+                    print("NO PERFORMANCE LICENSE")
 
-            # Close Connection
-            net_connect.disconnect()
-            print("CONNECTION CLOSED")
+                # Close Connection
+                net_connect.disconnect()
+                print("CONNECTION CLOSED")
+        
+        except :
+            print("ERROR CONNECTING TO "+i+", SKIPPING ...")
             
 
 
