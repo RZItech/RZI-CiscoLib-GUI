@@ -7,18 +7,13 @@ import datetime
 
 device = { 
     "device_type": "cisco_ios",
-    "host": "",
+    "ip": "",
     "username": "",
     "password": "",
     "secret": "",
 }
 
-def get_license_data(C):
-    _STDOUT_EN = C.run('en', pty=True)
-    print("en outputed the following: "+_STDOUT_EN)
-    _STDOUT_LICESNSE = C.run('show license', pty=True)
-    print("sh license outputed the following: "+ _STDOUT_LICESNSE)
-    return _STDOUT_LICESNSE
+
 
 def cisco_get_perf_license() :
     # Define temporary variables
@@ -38,7 +33,7 @@ def cisco_get_perf_license() :
 
     for i in _INLIST :
         # Update the IP address each loop
-        device.update({"host": i})
+        device.update({"ip": i})
         
         # Start connection to cisco_ios device
         with ConnectHandler(**device) as net_connect:
