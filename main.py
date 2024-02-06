@@ -4,6 +4,7 @@ from tkinter import ttk
 import datetime
 # Setup
 
+job = 0
 
 device = { 
     "device_type": "cisco_ios",
@@ -31,27 +32,36 @@ def cisco_get_perf_license() :
     f = open("OUT.txt","a")
     f.write("\n"+str(datetime.date.today())+"\n")
 
+    job = 0
+    lenlist = len(_INLIST)
     for i in _INLIST :
         # Update the IP address each loop
         device.update({"ip": i})
-        
+        print("CONNECTING TO:"+i)
         # Start connection to cisco_ios device
         with ConnectHandler(**device) as net_connect:
             #Send "show license"
             net_connect.enable()
             output = net_connect.send_command("show license")
+            print("OUTPUT: \n"+output+"\n END")
             if "PERF" in output.upper() :
                 #If there is a performance license, return True
                 perflicense = True
                 f.write("\n"+i+": Performance License = True")
+                print("PERFORMANCE LICENSE")
 
             else :
                 # Otherwise, return False
                 perflicense = False
                 f.write("\n"+i+": Performance License = False")
+                print("NO PERFORMANCE LICENSE")
 
             # Close Connection
             net_connect.disconnect()
+            print("CONNECTION CLOSED")
+            job = job+1
+            print("JOB "+JOB + "OF"+ lenlist)
+            
 
 
         
@@ -72,12 +82,15 @@ user = ttk.Entry(window)
 passwd = ttk.Entry(window)
 enpasswd = ttk.Entry(window)
 
+joblabel = ttk.Label(window, textvariable=job)
+
 userlabel.pack()
 user.pack()
 passwdlabel.pack()
 passwd.pack()
 enpasswdlabel.pack()
 enpasswd.pack()
+joblabel.pack()
 
 
 btn = ttk.Button(text="Get License Data", command=cisco_get_perf_license ,)
