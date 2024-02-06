@@ -59,8 +59,6 @@ def cisco_get_perf_license() :
             # Close Connection
             net_connect.disconnect()
             print("CONNECTION CLOSED")
-            job = job+1
-            print("JOB "+job + "OF"+ lenlist)
             
 
 
