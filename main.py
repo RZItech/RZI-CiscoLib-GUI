@@ -42,7 +42,7 @@ def cisco_get_perf_license() :
         with ConnectHandler(**device) as net_connect:
             #Send "show license"
             net_connect.enable()
-            output = net_connect.send_command("show license")
+            output = net_connect.send_command("show license summary")
             print("OUTPUT: \n"+output+"\n END")
             if "PERF" in output.upper() :
                 #If there is a performance license, return True
@@ -60,7 +60,7 @@ def cisco_get_perf_license() :
             net_connect.disconnect()
             print("CONNECTION CLOSED")
             job = job+1
-            print("JOB "+JOB + "OF"+ lenlist)
+            print("JOB "+job + "OF"+ lenlist)
             
 
 
