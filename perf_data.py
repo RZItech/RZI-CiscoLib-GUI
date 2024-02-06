@@ -16,7 +16,7 @@ device = {
 
 
 
-def cisco_wrmem() :
+def cisco_get_perf_license() :
     # Define temporary variables
     _INPUTEXT = intxt.get("1.0",'end-1c')
     _INLIST = _INPUTEXT.split("\n")
@@ -29,7 +29,7 @@ def cisco_wrmem() :
 
     # Update OUT.txt
     print(USER+" "+PASSWD)
-    f = open("wrmem.txt","a")
+    f = open("OUT.txt","a")
     f.write("\n"+str(datetime.date.today())+"\n")
 
     job = 0
@@ -43,19 +43,17 @@ def cisco_wrmem() :
             with ConnectHandler(**device) as net_connect:
                 #Send "show license"
                 net_connect.enable()
-                wrmemout = net_connect.send_command("wr mem")
-
-                print("wr mem OUT: \n"+wrmemout+"\n END")
-
-                if "OK" in wrmemout.upper() :
+                output = net_connect.send_command("show license summary")
+                print("OUTPUT: \n"+output+"\n END")
+                if "PERF" in output.upper() :
                     #If there is a performance license, return True
-                    f.write("\n"+i+": WR MEM Succeeded")
-                    print("WR MEM DONE")
+                    f.write("\n"+i+": Performance License = True")
+                    print("PERFORMANCE LICENSE")
 
                 else :
                     # Otherwise, return False
-                    f.write("\n"+i+": WR MEM FAILED WITH OUTPUT : \n"+wrmemout+"\n")
-                    print("WR MEM FAILED")
+                    f.write("\n"+i+": Performance License = False")
+                    print("NO PERFORMANCE LICENSE")
 
                 # Close Connection
                 net_connect.disconnect()
@@ -72,7 +70,7 @@ def cisco_wrmem() :
 # Initilaze GUI
 window = tk.Tk()
 
-ttk.Label(text="RZI Mass WR MEM").pack()
+ttk.Label(text="RZI Cisco Data Collector").pack()
 
 intxt = tk.Text(height=15, width=30)
 intxt.pack()
@@ -95,7 +93,7 @@ enpasswd.pack()
 joblabel.pack()
 
 
-btn = ttk.Button(text="wr mem", command=cisco_wrmem ,)
+btn = ttk.Button(text="Get License Data", command=cisco_get_perf_license ,)
 btn.pack()
 
 
